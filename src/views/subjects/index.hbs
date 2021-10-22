@@ -1,0 +1,178 @@
+<div class='container p-5 d-flex align-items-center'>
+	<div class='row'>
+		<div class='col-md-5'>
+			<div class='card card-body p-5 rounded-0'>
+				<h3>Add A Subject</h3>
+				<form action='/subjects/add' method='post'>
+
+					<div class='mb-3'>
+						<label for='subject_code'>Subject Code</label>
+						<input
+							id='subject_code'
+							class='form-control mb-3'
+							type='text'
+							name='subject_code'
+							autofocus
+						/>
+					</div>
+
+					<div class='mb-3'>
+						<label for='subject_name'>Subject</label>
+						<input
+							id='subject_name'
+							class='form-control mb-3'
+							type='text'
+							name='subject_name'
+							autofocus
+						/>
+					</div>
+
+					<div class='mb-3'>
+						<label for='assigned_career'>Career</label>
+						<input
+							id='assigned_career'
+							class='form-control mb-3'
+							type='text'
+							name='assigned_career'
+							autofocus
+						/>
+					</div>
+
+					<div class='mb-3'>
+						<label for='passing_grade'>Passing Grade</label>
+						<input
+							id='passing_grade'
+							class='form-control mb-3'
+							type='number'
+							min='0'
+							max='100'
+							name='passing_grade'
+							autofocus
+						/>
+					</div>
+
+					<div class='mb-3'>
+						<label for='teacher'>Teacher</label>
+						<input
+							id='teacher'
+							class='form-control mb-3'
+							type='text'
+							name='teacher'
+							autofocus
+						/>
+					</div>
+
+					<div class='mb-3'>
+						<label for='attendance'>Attendance</label>
+						<input
+							id='attendance'
+							class='form-control mb-3'
+							type='number'
+							min='0'
+							max='100'
+							name='attendance'
+							autofocus
+						/>
+					</div>
+
+					<div class='mb-3'>
+						<label for='max_grade'>Max Grade</label>
+						<input
+							id='max_grade'
+							class='form-control mb-3'
+							type='number'
+							min='0'
+							max='100'
+							name='max_grade'
+							autofocus
+						/>
+					</div>
+
+					<div class='mb-3'>
+						<label for='total_students'>Total Students</label>
+						<input
+							id='total_students'
+							class='form-control mb-3'
+							type='number'
+							min='0'
+							max='100'
+							name='total_students'
+							autofocus
+						/>
+					</div>
+
+					<div class='mb-3'>
+						<label for='languages'>Languages</label>
+						<input
+							id='languages'
+							class='form-control mb-3'
+							type='text'
+							name='languages'
+							autofocus
+						/>
+					</div>
+
+					<div class='mb-3'>
+						<label for='hours_per_week'>Hours Per Week</label>
+						<input
+							id='hours_per_week'
+							class='form-control mb-3'
+							type='number'
+							name='hours_per_week'
+							autofocus
+						/>
+					</div>
+
+					<button class='btn btn-primary' type='submit'>Add</button>
+				</form>
+			</div>
+		</div>
+
+		<div class='col-md-7'>
+			<table class='table table-bordered table-hover table-secondary'>
+				<thead>
+					<tr>
+						<th>Code</th>
+						<th>Name</th>
+						<th>Career</th>
+						<th>Passing Grade</th>
+						<th>Teacher</th>
+						<th>Attendance</th>
+						<th>Max Grade</th>
+						<th>Students</th>
+						<th>Languages</th>
+						<th>Hours Per Week</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{{#each subjects}}
+						<tr>
+							<td>{{subject_code}}</td>
+							<td><strong>{{subject_name}}</strong></td>
+							<td><strong>{{assigned_career}}</strong></td>
+							<td><strong>{{passing_grade}}</strong></td>
+							<td><strong>{{teacher}}</strong></td>
+							<td><strong>{{attendance}}</strong></td>
+							<td><strong>{{max_grade}}</strong></td>
+							<td><strong>{{total_students}}</strong></td>
+							<td><strong>{{languages}}</strong></td>
+							<td><strong>{{hours_per_week}}</strong></td>
+							<td>
+								<a
+									href='/subjects/delete/{{_id}}'
+									class='btn btn-danger'
+								>
+									Delete
+								</a>
+								<a href='/subjects/edit/{{_id}}' class='btn btn-info'>
+									Edit
+								</a>
+							</td>
+						</tr>
+					{{/each}}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,205 @@
+<div class='container p-5 d-flex align-items-center'>
+	<div class='row'>
+		<div class='col-md-5'>
+			<div class='card card-body p-5 rounded-0'>
+				<h3>Add A Grade</h3>
+				<form action='/grades/add' method='post'>
+
+					<div class='mb-3'>
+						<label for='student_id'>Student ID</label>
+						<input
+							id='student_id'
+							class='form-control mb-3'
+							type='number'
+							min='0'
+							max='1000000'
+							name='student_id'
+							autofocus
+						/>
+					</div>
+
+					<div class='mb-3'>
+						<label for='subject_code'>Subject Code</label>
+						<input
+							id='subject_code'
+							class='form-control mb-3'
+							type='text'
+							name='subject_code'
+							autofocus
+						/>
+					</div>
+
+					<div class='mb-3'>
+						<label for='p_1'>Partial 1</label>
+						<input
+							id='p_1'
+							class='form-control mb-3'
+							type='number'
+							step='0.01'
+							name='p_1'
+							autofocus
+						/>
+					</div>
+
+					<div class='mb-3'>
+						<label for='p_2'>Partial 2</label>
+						<input
+							id='p_2'
+							class='form-control mb-3'
+							type='number'
+							step='0.01'
+							name='p_2'
+							autofocus
+						/>
+					</div>
+
+					<div class='mb-3'>
+						<label for='p_3'>Partial 3</label>
+						<input
+							id='p_3'
+							class='form-control mb-3'
+							type='number'
+							step='0.01'
+							name='p_3'
+							autofocus
+						/>
+					</div>
+
+					<div class='mb-3'>
+						<label for='total_grade'>Total Grade</label>
+						<input
+							id='total_grade'
+							class='form-control mb-3'
+							type='number'
+							step='0.01'
+							name='total_grade'
+							autofocus
+						/>
+					</div>
+
+					<div class='mb-3'>
+						<label for='best_student'>Best Student</label>
+						<input
+							id='best_student'
+							class='form-control mb-3'
+							type='text'
+							name='best_student'
+							autofocus
+						/>
+					</div>
+
+					<div class='mb-3'>
+						<label for='worst_student'>Worst Student</label>
+						<input
+							id='worst_student'
+							class='form-control mb-3'
+							type='text'
+							name='worst_student'
+							autofocus
+						/>
+					</div>
+
+					<div class='mb-3'>
+						<label for='total_students'>Total Students</label>
+						<input
+							id='total_students'
+							class='form-control mb-3'
+							type='number'
+							min='0'
+							max='100'
+							name='total_students'
+							autofocus
+						/>
+					</div>
+
+					<div class='mb-3'>
+						<label for='total_failed'>Total Failed</label>
+						<input
+							id='total_failed'
+							class='form-control mb-3'
+							type='number'
+							min='0'
+							max='100'
+							name='total_failed'
+							autofocus
+						/>
+					</div>
+
+					<div class='mb-3'>
+						<label for='total_succeded'>Total Succeded</label>
+						<input
+							id='total_succeded'
+							class='form-control mb-3'
+							type='number'
+							min='0'
+							max='100'
+							name='total_succeded'
+							autofocus
+						/>
+					</div>
+
+					<div class='mb-3'>
+						<label for='school_cycle'>School Cycle</label>
+						<input
+							id='school_cycle'
+							class='form-control mb-3'
+							type='text'
+							name='school_cycle'
+							autofocus
+						/>
+					</div>
+
+					<button class='btn btn-primary' type='submit'>Add</button>
+				</form>
+			</div>
+		</div>
+
+		<div class='col-md-7'>
+			<table class='table table-bordered table-hover table-secondary'>
+				<thead>
+					<tr>
+						<th>Student ID</th>
+						<th>Subject Code</th>
+						<th>P1</th>
+						<th>P2</th>
+						<th>P3</th>
+						<th>Total</th>
+						<th>Best</th>
+						<th>Worst</th>
+						<th>Students</th>
+						<th>Failed</th>
+						<th>Succeded</th>
+						<th>School Cycle</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{{#each grades}}
+						<tr>
+							<td>{{student_id}}</td>
+							<td><strong>{{subject_code}}</strong></td>
+							<td><strong>{{p_1}}</strong></td>
+							<td><strong>{{p_2}}</strong></td>
+							<td><strong>{{p_3}}</strong></td>
+							<td><strong>{{total_grade}}</strong></td>
+							<td><strong>{{best_student}}</strong></td>
+							<td><strong>{{worst_student}}</strong></td>
+							<td><strong>{{total_students}}</strong></td>
+							<td><strong>{{total_failed}}</strong></td>
+							<td><strong>{{total_succeded}}</strong></td>
+							<td><strong>{{school_cycle}}</strong></td>
+							<td>
+								<a href='/grades/delete/{{_id}}' class='btn btn-danger'>
+									Delete
+								</a>
+								<a href='/grades/edit/{{_id}}' class='btn btn-info'>
+									Edit
+								</a>
+							</td>
+						</tr>
+					{{/each}}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

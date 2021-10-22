@@ -1,0 +1,153 @@
+<div class='container'>
+	<div class='row'>
+		<div class='col-md-5 offset-md-3'>
+			<div class='card'>
+				<div class='card-body'>
+					<h1>Update Grade</h1>
+
+					<form action='/grades/edit/{{grade._id}}' method='post'>
+						<div class='mb-3'>
+							<label for='subject_code'>Student ID</label>
+							<input
+								class='form-control'
+								type='number'
+								min='0'
+								max='1000000'
+								name='student_id'
+								value='{{grade.student_id}}'
+							/>
+						</div>
+						<div class='mb-3'>
+							<label for='subject_code'>Subject Code</label>
+							<input
+								id='subject_code'
+								class='form-control mb-3'
+								type='text'
+								name='subject_code'
+								value='{{grade.subject_code}}'
+							/>
+						</div>
+
+						<div class='mb-3'>
+							<label for='p_1'>Partial 1</label>
+							<input
+								id='p_1'
+								class='form-control mb-3'
+								type='number'
+								step='0.01'
+								name='p_1'
+								value='{{grade.p_1}}'
+							/>
+						</div>
+
+						<div class='mb-3'>
+							<label for='p_2'>Partial 2</label>
+							<input
+								id='p_2'
+								class='form-control mb-3'
+								type='number'
+								step='0.01'
+								name='p_2'
+								value='{{grade.p_2}}'
+							/>
+						</div>
+
+						<div class='mb-3'>
+							<label for='p_3'>Partial 3</label>
+							<input
+								id='p_3'
+								class='form-control mb-3'
+								type='number'
+								step='0.01'
+								name='p_3'
+								value='{{grade.p_3}}'
+							/>
+						</div>
+
+						<div class='mb-3'>
+							<label for='total_grade'>Total Grade</label>
+							<input
+								id='total_grade'
+								class='form-control mb-3'
+								type='number'
+								step='0.01'
+								name='total_grade'
+								value='{{grade.total_grade}}'
+							/>
+						</div>
+
+						<div class='mb-3'>
+							<label for='best_student'>Best Student</label>
+							<input
+								id='best_student'
+								class='form-control mb-3'
+								type='text'
+								name='best_student'
+								value='{{grade.best_student}}'
+							/>
+						</div>
+
+						<div class='mb-3'>
+							<label for='worst_student'>Worst Student</label>
+							<input
+								id='worst_student'
+								class='form-control mb-3'
+								type='text'
+								name='worst_student'
+								value='{{grade.worst_student}}'
+							/>
+						</div>
+						<div class='mb-3'>
+							<label for='total_students'>Total Students</label>
+							<input
+								id='total_students'
+								class='form-control mb-3'
+								type='number'
+								min='0'
+								max='100'
+								name='total_students'
+								value='{{grade.total_students}}'
+							/>
+						</div>
+						<div class='mb-3'>
+							<label for='total_failed'>Total Failed</label>
+							<input
+								id='total_failed'
+								class='form-control mb-3'
+								type='number'
+								min='0'
+								max='100'
+								name='total_failed'
+								value='{{grade.total_failed}}'
+							/>
+						</div>
+						<div class='mb-3'>
+							<label for='total_succeded'>Total Succeded</label>
+							<input
+								id='total_succeded'
+								class='form-control mb-3'
+								type='number'
+								min='0'
+								max='100'
+								name='total_succeded'
+								value='{{grade.total_succeded}}'
+							/>
+						</div>
+						<div class='mb-3'>
+							<label for='school_cycle'>School Cycle</label>
+							<input
+								id='school_cycle'
+								class='form-control mb-3'
+								type='text'
+								name='school_cycle'
+								value='{{grade.school_cycle}}'
+							/>
+						</div>
+
+						<button class='btn btn-primary' type='submit'>Update</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

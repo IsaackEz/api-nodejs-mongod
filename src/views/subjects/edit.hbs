@@ -1,0 +1,133 @@
+<div class='container'>
+	<div class='row'>
+		<div class='col-md-5 offset-md-3'>
+			<div class='card'>
+				<div class='card-body'>
+					<h1>Update Subject</h1>
+
+					<form action='/subjects/edit/{{subject._id}}' method='post'>
+						<div class='mb-3'>
+							<input
+								class='form-control'
+								type='text'
+								name='subject_code'
+								value='{{subject.subject_code}}'
+							/>
+						</div>
+						<div class='mb-3'>
+							<label for='subject_name'>Subject</label>
+							<input
+								id='subject_name'
+								class='form-control mb-3'
+								type='text'
+								name='subject_name'
+								value='{{subject.subject_name}}'
+							/>
+						</div>
+
+						<div class='mb-3'>
+							<label for='assigned_career'>Career</label>
+							<input
+								id='assigned_career'
+								class='form-control mb-3'
+								type='text'
+								name='assigned_career'
+								value='{{subject.assigned_career}}'
+							/>
+						</div>
+
+						<div class='mb-3'>
+							<label for='passing_grade'>Passing Grade</label>
+							<input
+								id='passing_grade'
+								class='form-control mb-3'
+								type='number'
+								min='0'
+								max='100'
+								name='passing_grade'
+								value='{{subject.passing_grade}}'
+							/>
+						</div>
+
+						<div class='mb-3'>
+							<label for='teacher'>Teacher</label>
+							<input
+								id='teacher'
+								class='form-control mb-3'
+								type='text'
+								name='teacher'
+								value='{{subject.teacher}}'
+							/>
+						</div>
+
+						<div class='mb-3'>
+							<label for='attendance'>Attendance</label>
+							<input
+								id='attendance'
+								class='form-control mb-3'
+								type='number'
+								min='0'
+								max='100'
+								name='attendance'
+								value='{{subject.attendance}}'
+							/>
+						</div>
+
+						<div class='mb-3'>
+							<label for='max_grade'>Max Grade</label>
+							<input
+								id='max_grade'
+								class='form-control mb-3'
+								type='number'
+								min='0'
+								max='100'
+								name='max_grade'
+								value='{{subject.max_grade}}'
+							/>
+						</div>
+
+						<div class='mb-3'>
+							<label for='total_students'>Total Students</label>
+							<input
+								id='total_students'
+								class='form-control mb-3'
+								type='number'
+								min='0'
+								max='100'
+								name='total_students'
+								value='{{subject.total_students}}'
+							/>
+						</div>
+
+						<div class='mb-3'>
+							<label for='languages'>Languages</label>
+							<input
+								id='languages'
+								class='form-control mb-3'
+								type='text'
+								min='0'
+								max='100'
+								name='languages'
+								value='{{subject.languages}}'
+							/>
+						</div>
+
+						<div class='mb-3'>
+							<label for='hours_per_week'>Hours Per Week</label>
+							<input
+								id='hours_per_week'
+								class='form-control mb-3'
+								type='number'
+								min='0'
+								max='10'
+								name='hours_per_week'
+								value='{{subject.hours_per_week}}'
+							/>
+						</div>
+						<button class='btn btn-primary' type='submit'>Update</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
