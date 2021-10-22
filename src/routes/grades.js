@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Grade = require('../model/Grade');
+const cors = require('cors');
 
 //GET ALL ITEMS AND SHOW THEM IN A TABLE
-router.get('/', async (req, res) => {
+router.get('/', cors(), async (req, res) => {
 	try {
 		const grades = await Grade.find().lean();
 
@@ -16,7 +17,7 @@ router.get('/', async (req, res) => {
 	}
 });
 
-router.get('/all', async (req, res) => {
+router.get('/all', cors(), async (req, res) => {
 	const limit = req.query.limit || 5;
 	const page = req.query.page || 1;
 
@@ -31,7 +32,7 @@ router.get('/all', async (req, res) => {
 });
 
 //GET 1 ITEM
-router.get('/:student_id', async (req, res) => {
+router.get('/:student_id', cors(), async (req, res) => {
 	const { student_id } = req.params;
 	try {
 		const subject = await Grade.findOne({
@@ -44,7 +45,7 @@ router.get('/:student_id', async (req, res) => {
 });
 
 //ADD A NEW RECORD
-router.post('/add', async (req, res, next) => {
+router.post('/add', cors(), async (req, res, next) => {
 	try {
 		const grade = new Grade(req.body);
 		await grade.save();
@@ -55,7 +56,7 @@ router.post('/add', async (req, res, next) => {
 });
 
 //EDIT A RECORD
-router.get('/edit/:id', async (req, res, next) => {
+router.get('/edit/:id', cors(), async (req, res, next) => {
 	const grade = await Grade.findOne({
 		_id: req.params.id,
 	}).lean();
@@ -63,14 +64,14 @@ router.get('/edit/:id', async (req, res, next) => {
 	console.log(grade);
 });
 
-router.post('/edit/:id', async (req, res, next) => {
+router.post('/edit/:id', cors(), async (req, res, next) => {
 	const { id } = req.params;
 	await Grade.updateOne({ _id: id }, req.body);
 	res.redirect('/grades');
 });
 
 //POSTMAN
-router.put('/edit/:id', async (req, res, next) => {
+router.put('/edit/:id', cors(), async (req, res, next) => {
 	const { id } = req.params;
 	try {
 		await Grade.findOneAndUpdate({ _id: id }, req.body);
@@ -81,14 +82,14 @@ router.put('/edit/:id', async (req, res, next) => {
 });
 
 //DELETE A RECORD
-router.get('/delete/:id', async (req, res, next) => {
+router.get('/delete/:id', cors(), async (req, res, next) => {
 	let { id } = req.params;
 	await Grade.findOneAndDelete({ _id: id });
 	res.redirect('/grades');
 });
 
 //POSTMAN
-router.delete('/delete/:id', async (req, res, next) => {
+router.delete('/delete/:id', cors(), async (req, res, next) => {
 	const { id } = req.params;
 	try {
 		await Grade.remove({ _id: id });

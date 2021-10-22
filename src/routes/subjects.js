@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Subject = require('../model/Subject');
+const cors = require('cors');
 
 //GET ALL ITEMS AND SHOW THEM IN A TABLE
-router.get('/all', async (req, res) => {
+router.get('/all', cors(), async (req, res) => {
 	const limit = req.query.limit || 5;
 	const page = req.query.page || 1;
 
@@ -17,7 +18,7 @@ router.get('/all', async (req, res) => {
 	}
 });
 
-router.get('/', async (req, res) => {
+router.get('/', cors(), async (req, res) => {
 	try {
 		const subjects = await Subject.find().lean();
 
@@ -31,7 +32,7 @@ router.get('/', async (req, res) => {
 });
 
 //GET 1 ITEM
-router.get('/:subject_code', async (req, res) => {
+router.get('/:subject_code', cors(), async (req, res) => {
 	const { subject_code } = req.params;
 	try {
 		const subject = await Subject.findOne({
@@ -44,7 +45,7 @@ router.get('/:subject_code', async (req, res) => {
 });
 
 //ADD A NEW RECORD
-router.post('/add', async (req, res, next) => {
+router.post('/add', cors(), async (req, res, next) => {
 	try {
 		const subject = new Subject(req.body);
 		await subject.save();
@@ -55,21 +56,21 @@ router.post('/add', async (req, res, next) => {
 });
 
 //EDIT A RECORD
-router.get('/edit/:id', async (req, res, next) => {
+router.get('/edit/:id', cors(), async (req, res, next) => {
 	const subject = await Subject.findOne({
 		_id: req.params.id,
 	}).lean();
 	res.render('subjects/edit', { subject });
 });
 
-router.post('/edit/:id', async (req, res, next) => {
+router.post('/edit/:id', cors(), async (req, res, next) => {
 	const { id } = req.params;
 	console.log(id);
 	await Subject.updateOne({ _id: id }, req.body);
 	res.redirect('/subjects');
 });
 //POSTMAN
-router.put('/edit/:id', async (req, res, next) => {
+router.put('/edit/:id', cors(), async (req, res, next) => {
 	const { id } = req.params;
 	try {
 		await Subject.findOneAndUpdate({ _id: id }, req.body);
@@ -80,13 +81,13 @@ router.put('/edit/:id', async (req, res, next) => {
 });
 
 //DELETE A RECORD
-router.get('/delete/:id', async (req, res, next) => {
+router.get('/delete/:id', cors(), async (req, res, next) => {
 	let { id } = req.params;
 	await Subject.remove({ _id: id });
 	res.redirect('/subjects');
 });
 //POSTMAN
-router.delete('/delete/:id', async (req, res, next) => {
+router.delete('/delete/:id', cors(), async (req, res, next) => {
 	const { id } = req.params;
 	try {
 		await Subject.remove({ _id: id });

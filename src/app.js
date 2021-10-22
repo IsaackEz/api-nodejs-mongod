@@ -5,6 +5,7 @@ const exphbs = require('express-handlebars');
 const indexRoutes = require('./routes/index');
 const subjectsRoutes = require('./routes/subjects');
 const gradesRoutes = require('./routes/grades');
+const cors = require('cors');
 
 const app = express();
 const port = require('./config');
@@ -26,6 +27,7 @@ app.set('view engine', '.hbs');
 // middlewares
 app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 // routes
 app.use('/', indexRoutes);
