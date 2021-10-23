@@ -45,13 +45,24 @@ router.get('/:subject_code', cors(), async (req, res) => {
 });
 
 //ADD A NEW RECORD
-router.post('/add', cors(), async (req, res, next) => {
+router.post('/addNew', cors(), async (req, res, next) => {
 	try {
 		const subject = new Subject(req.body);
 		await subject.save();
 		res.redirect('/subjects');
 	} catch (error) {
 		return res.render('error', { errorMessage: error.message });
+	}
+});
+
+//POSTMAN
+router.post('/add', cors(), async (req, res, next) => {
+	try {
+		const subject = new Subject(req.body);
+		await subject.save();
+		res.send('Subject added successfully');
+	} catch (error) {
+		return res.send(error);
 	}
 });
 

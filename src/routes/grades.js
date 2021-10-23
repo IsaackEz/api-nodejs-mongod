@@ -45,13 +45,25 @@ router.get('/:student_id', cors(), async (req, res) => {
 });
 
 //ADD A NEW RECORD
-router.post('/add', cors(), async (req, res, next) => {
+router.post('/addNew', cors(), async (req, res, next) => {
 	try {
 		const grade = new Grade(req.body);
 		await grade.save();
 		res.redirect('/grades');
+		return;
 	} catch (error) {
 		return res.render('error', { errorMessage: error.message });
+	}
+});
+
+//POSTMAN
+router.post('/add', cors(), async (req, res, next) => {
+	try {
+		const grade = new Grade(req.body);
+		await grade.save();
+		res.send('Subject added successfully');
+	} catch (error) {
+		return res.send(error);
 	}
 });
 
