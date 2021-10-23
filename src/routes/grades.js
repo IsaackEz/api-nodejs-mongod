@@ -63,7 +63,7 @@ router.post('/add', cors(), async (req, res, next) => {
 		await grade.save();
 		res.send('Subject added successfully');
 	} catch (error) {
-		return res.send(error);
+		return res.send(error.message);
 	}
 });
 

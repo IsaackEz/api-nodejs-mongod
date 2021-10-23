@@ -62,7 +62,7 @@ router.post('/add', cors(), async (req, res, next) => {
 		await subject.save();
 		res.send('Subject added successfully');
 	} catch (error) {
-		return res.send(error);
+		return res.send(error.message);
 	}
 });
 
