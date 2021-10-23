@@ -1,6 +1,7 @@
 const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
+const bodyParser = require('body-parser');
 const exphbs = require('express-handlebars');
 const indexRoutes = require('./routes/index');
 const subjectsRoutes = require('./routes/subjects');
@@ -26,7 +27,8 @@ app.set('view engine', '.hbs');
 
 // middlewares
 app.use(morgan('dev'));
-app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cors());
 
 // routes
