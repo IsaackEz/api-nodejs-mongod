@@ -5,7 +5,7 @@ const mongoosePaginate = require('mongoose-paginate-v2');
 const SubjectSchema = Schema(
 	{
 		subject_code: { type: String, required: true, trim: true, unique: true },
-		subject_name: { type: String, required: true, trim: true, unique: true },
+		subject_name: { type: String, required: true, trim: true },
 		assigned_career: { type: String, trim: true },
 		passing_grade: { type: Number, trim: true },
 		teacher: { type: String, trim: true },
