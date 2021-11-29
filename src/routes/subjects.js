@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Subject = require('../model/Subject');
+const axios = require('axios');
 const cors = require('cors');
 
 //GET ALL ITEMS AND SHOW THEM IN A TABLE
@@ -108,4 +109,116 @@ router.delete('/delete/:id', cors(), async (req, res, next) => {
 	}
 });
 
+// Obtener todas las materias de un alumno
+router.get('/student/:student_id', cors(), async (req, res) => {
+	const { student_id } = req.params;
+	const subjects = [];
+	let student = [];
+	const URL = 'https://crud-nodejs-1.herokuapp.com/students?limit=30';
+	try {
+		axios.get(URL).then(async (response) => {
+			items = response.data;
+			const subject = await Subject.find().lean();
+			for (let i = 0; i < items.length; i++) {
+				if (items[i].student_id == student_id) {
+					student = items[i];
+				}
+			}
+			for (let i = 0; i < subject.length; i++) {
+				if (student.career == subject[i].assigned_career) {
+					subjects.push(subject[i]);
+				}
+			}
+			const relation = {
+				student,
+				subjects,
+			};
+			res.send(relation);
+		});
+	} catch (error) {
+		console.log({ error });
+		return res.render('error', { errorMessage: error.message });
+	}
+});
+
+router.get('/career/:assigned_career', cors(), async (req, res) => {
+	const { assigned_career } = req.params;
+	const subjects = [];
+	let career = [];
+	const URL = 'https://app-flask-mysql.herokuapp.com/career?limit=30';
+	try {
+		axios.get(URL).then(async (response) => {
+			items = response.data.data;
+			const subject = await Subject.find().lean();
+			for (let i = 0; i < items.length; i++) {
+				if (items[i].career_name == assigned_career) {
+					career = items[i];
+				}
+			}
+			for (let i = 0; i < subject.length; i++) {
+				if (career.career_name == subject[i].assigned_career) {
+					subjects.push(subject[i]);
+				}
+			}
+			const relation = {
+				career,
+				subjects,
+			};
+			res.send(relation);
+		});
+	} catch (error) {
+		console.log({ error });
+		return res.render('error', { errorMessage: error.message });
+	}
+});
+
+router.get(
+	'/career/:assigned_career/:semester_num',
+	cors(),
+	async (req, res) => {
+		const { assigned_career, semester_num } = req.params;
+		const subjects = [];
+		let career = [];
+		let semester = [];
+		const URL = 'https://app-flask-mysql.herokuapp.com/career?limit=30';
+		const URL2 = 'https://app-flask-mysql.herokuapp.com/semester?limit=30';
+		try {
+			axios.get(URL).then(async (response) => {
+				items = response.data.data;
+				const subject = await Subject.find().lean();
+				for (let i = 0; i < items.length; i++) {
+					if (items[i].career_name == assigned_career) {
+						career = items[i];
+					}
+				}
+				axios.get(URL2).then(async (response) => {
+					itemsSemester = response.data.data;
+					for (let i = 0; i < itemsSemester.length; i++) {
+						if (itemsSemester[i].semester_num == semester_num) {
+							semester = itemsSemester[i];
+						}
+					}
+
+					for (let i = 0; i < subject.length; i++) {
+						if (
+							career.career_name == subject[i].assigned_career &&
+							semester.semester_num == subject[i].semester_num
+						) {
+							subjects.push(subject[i]);
+						}
+					}
+					const relation = {
+						career,
+						semester,
+						subjects,
+					};
+					res.send(relation);
+				});
+			});
+		} catch (error) {
+			console.log({ error });
+			return res.render('error', { errorMessage: error.message });
+		}
+	}
+);
 module.exports = router;
