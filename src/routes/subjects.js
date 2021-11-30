@@ -4,6 +4,7 @@ const Subject = require('../model/Subject');
 const axios = require('axios');
 const cors = require('cors');
 
+//******** CRUD ********/
 //GET ALL ITEMS AND SHOW THEM IN A TABLE
 router.get('/all', cors(), async (req, res) => {
 	const limit = req.query.limit || 5;
@@ -18,7 +19,6 @@ router.get('/all', cors(), async (req, res) => {
 		return res.render('error', { errorMessage: error.message });
 	}
 });
-
 router.get('/', cors(), async (req, res) => {
 	try {
 		const subjects = await Subject.find().lean();
@@ -55,7 +55,6 @@ router.post('/addNew', cors(), async (req, res, next) => {
 		return res.render('error', { errorMessage: error.message });
 	}
 });
-
 //POSTMAN
 router.post('/add', cors(), async (req, res, next) => {
 	try {
@@ -74,7 +73,6 @@ router.get('/edit/:id', cors(), async (req, res, next) => {
 	}).lean();
 	res.render('subjects/edit', { subject });
 });
-
 router.post('/edit/:id', cors(), async (req, res, next) => {
 	const { id } = req.params;
 	console.log(id);
@@ -109,7 +107,7 @@ router.delete('/delete/:id', cors(), async (req, res, next) => {
 	}
 });
 
-//-----------------------------------------------------------------------------------------------------------------
+//********** API connection **************/
 
 // Obtener todas las materias de un alumno
 router.get('/student/:student_id', cors(), async (req, res) => {

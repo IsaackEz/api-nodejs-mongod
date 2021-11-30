@@ -4,6 +4,8 @@ const Grade = require('../model/Grade');
 const axios = require('axios');
 const cors = require('cors');
 
+//******** CRUD ********/
+
 //GET ALL ITEMS AND SHOW THEM IN A TABLE
 router.get('/', cors(), async (req, res) => {
 	try {
@@ -17,7 +19,6 @@ router.get('/', cors(), async (req, res) => {
 		return res.render('error', { errorMessage: error.message });
 	}
 });
-
 router.get('/all', cors(), async (req, res) => {
 	const limit = req.query.limit || 5;
 	const page = req.query.page || 1;
@@ -69,7 +70,6 @@ router.post('/addNew', cors(), async (req, res, next) => {
 		return res.render('error', { errorMessage: error.message });
 	}
 });
-
 //POSTMAN
 router.post('/add', cors(), async (req, res, next) => {
 	try {
@@ -89,13 +89,11 @@ router.get('/edit/:id', cors(), async (req, res, next) => {
 	res.render('grades/edit', { grade });
 	console.log(grade);
 });
-
 router.post('/edit/:id', cors(), async (req, res, next) => {
 	const { id } = req.params;
 	await Grade.updateOne({ _id: id }, req.body);
 	res.redirect('/grades');
 });
-
 //POSTMAN
 router.put('/edit/:id', cors(), async (req, res, next) => {
 	const { id } = req.params;
@@ -113,7 +111,6 @@ router.get('/delete/:id', cors(), async (req, res, next) => {
 	await Grade.findOneAndDelete({ _id: id });
 	res.redirect('/grades');
 });
-
 //POSTMAN
 router.delete('/delete/:id', cors(), async (req, res, next) => {
 	const { id } = req.params;
@@ -125,7 +122,7 @@ router.delete('/delete/:id', cors(), async (req, res, next) => {
 	}
 });
 
-//-----------------------------------------------------------------------------------------------------------------
+//********** API connection **************/
 
 // Obtener todas las calificaciones de una alumno
 router.get('/student/:student_id', cors(), async (req, res) => {
