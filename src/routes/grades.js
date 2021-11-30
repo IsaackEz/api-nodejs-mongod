@@ -36,10 +36,23 @@ router.get('/all', cors(), async (req, res) => {
 router.get('/:student_id', cors(), async (req, res) => {
 	const { student_id } = req.params;
 	try {
-		const subject = await Grade.findOne({
+		const grades = await Grade.findOne({
 			student_id: student_id,
 		}).lean();
-		res.send(subject);
+		res.send(grades);
+	} catch (error) {
+		console.log({ error });
+	}
+});
+
+//GET all items with total_grade
+router.get('/total/:total_grade', cors(), async (req, res) => {
+	const { total_grade } = req.params;
+	try {
+		const grades = await Grade.find({
+			total_grade: total_grade,
+		}).lean();
+		res.send(grades);
 	} catch (error) {
 		console.log({ error });
 	}
@@ -112,23 +125,21 @@ router.delete('/delete/:id', cors(), async (req, res, next) => {
 	}
 });
 
+//-----------------------------------------------------------------------------------------------------------------
+
 // Obtener todas las calificaciones de una alumno
 router.get('/student/:student_id', cors(), async (req, res) => {
 	const { student_id } = req.params;
 	let student = [];
-	const URL = 'https://crud-nodejs-1.herokuapp.com/students?limit=30';
+	const URL = `https://crud-nodejs-1.herokuapp.com/${student_id}`;
+
 	try {
 		axios.get(URL).then(async (response) => {
-			items = response.data;
-
-			for (let i = 0; i < items.length; i++) {
-				if (items[i].student_id == student_id) {
-					student = items[i];
-				}
-			}
+			student = response.data;
 			const grades = await Grade.find({
-				student_id: student.student_id,
+				student_id: student[0].student_id,
 			}).lean();
+
 			const relation = {
 				student,
 				grades,
@@ -140,57 +151,47 @@ router.get('/student/:student_id', cors(), async (req, res) => {
 	}
 });
 
-router.get(
-	'/career/:assigned_career/:semester_num',
-	cors(),
-	async (req, res) => {
-		const { assigned_career, semester_num } = req.params;
-		const grades = [];
-		let career = [];
-		let semester = [];
-		const URL = 'https://app-flask-mysql.herokuapp.com/career?limit=30';
-		const URL2 = 'https://app-flask-mysql.herokuapp.com/semester?limit=30';
-		try {
-			axios.get(URL).then(async (response) => {
-				items = response.data.data;
-				const subject = await Grade.find().lean();
-				for (let i = 0; i < items.length; i++) {
-					if (items[i].career_code == assigned_career) {
-						career = items[i];
+//Obtener todas las calificaciones de una carrera en un semestre
+router.get('/career/:career_code/:semester_num', cors(), async (req, res) => {
+	const { career_code, semester_num } = req.params;
+	let career = [];
+	let semester = [];
+	const URL = `https://app-flask-mysql.herokuapp.com/career/${career_code}`;
+	const URL2 = `https://app-flask-mysql.herokuapp.com/semester/${semester_num}`;
+	try {
+		axios.get(URL).then(async (response) => {
+			career = response.data.data;
+			const grades = await Grade.find().lean();
+			axios.get(URL2).then(async (response) => {
+				semester = response.data.data;
+				for (let i = 0; i < semester.length; i++) {
+					if (
+						semester[i].semester_num == semester_num &&
+						semester[i].career_code == career_code
+					) {
+						semester.push(semester[i]);
 					}
 				}
-				axios.get(URL2).then(async (response) => {
-					itemsSemester = response.data.data;
-					for (let i = 0; i < itemsSemester.length; i++) {
-						if (
-							itemsSemester[i].semester_num == semester_num &&
-							career.career_code == itemsSemester[i].career_code
-						) {
-							semester = itemsSemester[i];
-						}
+				for (let i = 0; i < grades.length; i++) {
+					if (
+						career_code == grades[i].assigned_career &&
+						semester_num == grades[i].semester_num
+					) {
+						grades.push(grades[i]);
 					}
-
-					for (let i = 0; i < subject.length; i++) {
-						if (
-							career.career_code == subject[i].assigned_career &&
-							semester.semester_num == subject[i].semester_num
-						) {
-							grades.push(subject[i]);
-						}
-					}
-					const relation = {
-						career,
-						semester,
-						grades,
-					};
-					res.send(relation);
-				});
+				}
+				const relation = {
+					career,
+					semester,
+					grades,
+				};
+				res.send(relation);
 			});
-		} catch (error) {
-			console.log({ error });
-			return res.render('error', { errorMessage: error.message });
-		}
+		});
+	} catch (error) {
+		console.log({ error });
+		return res.render('error', { errorMessage: error.message });
 	}
-);
+});
 
 module.exports = router;

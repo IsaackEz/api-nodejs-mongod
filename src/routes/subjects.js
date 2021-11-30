@@ -109,23 +109,20 @@ router.delete('/delete/:id', cors(), async (req, res, next) => {
 	}
 });
 
+//-----------------------------------------------------------------------------------------------------------------
+
 // Obtener todas las materias de un alumno
 router.get('/student/:student_id', cors(), async (req, res) => {
 	const { student_id } = req.params;
 	const subjects = [];
 	let student = [];
-	const URL = 'https://crud-nodejs-1.herokuapp.com/students?limit=30';
+	const URL = `https://crud-nodejs-1.herokuapp.com/students/${student_id}`;
 	try {
 		axios.get(URL).then(async (response) => {
-			items = response.data;
+			student = response.data;
 			const subject = await Subject.find().lean();
-			for (let i = 0; i < items.length; i++) {
-				if (items[i].student_id == student_id) {
-					student = items[i];
-				}
-			}
 			for (let i = 0; i < subject.length; i++) {
-				if (student.career == subject[i].assigned_career) {
+				if (student[0].career == subject[i].assigned_career) {
 					subjects.push(subject[i]);
 				}
 			}
@@ -140,24 +137,20 @@ router.get('/student/:student_id', cors(), async (req, res) => {
 		return res.render('error', { errorMessage: error.message });
 	}
 });
-//Obtener todoas las materias de una carrera
 
-router.get('/career/:assigned_career', cors(), async (req, res) => {
-	const { assigned_career } = req.params;
+//Obtener todas las materias de una carrera
+router.get('/career/:career_code', cors(), async (req, res) => {
+	const { career_code } = req.params;
 	const subjects = [];
 	let career = [];
-	const URL = 'https://app-flask-mysql.herokuapp.com/career?limit=30';
+	const URL = `https://app-flask-mysql.herokuapp.com/career/${career_code}`;
 	try {
 		axios.get(URL).then(async (response) => {
-			items = response.data.data;
+			career = response.data.data;
 			const subject = await Subject.find().lean();
-			for (let i = 0; i < items.length; i++) {
-				if (items[i].career_code == assigned_career) {
-					career = items[i];
-				}
-			}
+
 			for (let i = 0; i < subject.length; i++) {
-				if (career.career_code == subject[i].assigned_career) {
+				if (career_code == subject[i].assigned_career) {
 					subjects.push(subject[i]);
 				}
 			}
@@ -172,55 +165,62 @@ router.get('/career/:assigned_career', cors(), async (req, res) => {
 		return res.render('error', { errorMessage: error.message });
 	}
 });
-//Obtener todoas las materias de una carrera en un semestre en especifico
 
-router.get(
-	'/career/:assigned_career/:semester_num',
-	cors(),
-	async (req, res) => {
-		const { assigned_career, semester_num } = req.params;
-		const subjects = [];
-		let career = [];
-		let semester = [];
-		const URL = 'https://app-flask-mysql.herokuapp.com/career?limit=30';
-		const URL2 = 'https://app-flask-mysql.herokuapp.com/semester?limit=30';
-		try {
-			axios.get(URL).then(async (response) => {
-				items = response.data.data;
-				const subject = await Subject.find().lean();
-				for (let i = 0; i < items.length; i++) {
-					if (items[i].career_code == assigned_career) {
-						career = items[i];
+//Obtener todoas las materias de una carrera en un semestre en especifico
+router.get('/career/:career_code/:semester_num', cors(), async (req, res) => {
+	const { career_code, semester_num } = req.params;
+	let career = [];
+	let semester = [];
+	const URL = `https://app-flask-mysql.herokuapp.com/career/${career_code}`;
+	const URL2 = `https://app-flask-mysql.herokuapp.com/semester/${semester_num}`;
+	try {
+		axios.get(URL).then(async (response) => {
+			career = response.data.data;
+			const subjects = await Subject.find().lean();
+			axios.get(URL2).then(async (response) => {
+				semester = response.data.data;
+				for (let i = 0; i < semester.length; i++) {
+					if (
+						semester[i].semester_num == semester_num &&
+						semester[i].career_code == career_code
+					) {
+						semester.push(semester[i]);
 					}
 				}
-				axios.get(URL2).then(async (response) => {
-					itemsSemester = response.data.data;
-					for (let i = 0; i < itemsSemester.length; i++) {
-						if (itemsSemester[i].semester_num == semester_num) {
-							semester = itemsSemester[i];
-						}
-					}
 
-					for (let i = 0; i < subject.length; i++) {
-						if (
-							career.career_code == subject[i].assigned_career &&
-							semester.semester_num == subject[i].semester_num
-						) {
-							subjects.push(subject[i]);
-						}
+				for (let i = 0; i < subjects.length; i++) {
+					if (
+						career_code == subjects[i].assigned_career &&
+						semester_num == subjects[i].semester_num
+					) {
+						subjects.push(subjects[i]);
 					}
-					const relation = {
-						career,
-						semester,
-						subjects,
-					};
-					res.send(relation);
-				});
+				}
+				const relation = {
+					career,
+					semester,
+					subjects,
+				};
+				res.send(relation);
 			});
-		} catch (error) {
-			console.log({ error });
-			return res.render('error', { errorMessage: error.message });
-		}
+		});
+	} catch (error) {
+		console.log({ error });
+		return res.render('error', { errorMessage: error.message });
 	}
-);
+});
+
+//Obtener las materias con dicho nombre
+router.get('/name/:subject_name', cors(), async (req, res) => {
+	const { subject_name } = req.params;
+	try {
+		const subject = await Subject.find({
+			subject_name: subject_name,
+		}).lean();
+		res.send(subject);
+	} catch (error) {
+		console.log({ error });
+	}
+});
+
 module.exports = router;
