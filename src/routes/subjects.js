@@ -140,6 +140,7 @@ router.get('/student/:student_id', cors(), async (req, res) => {
 		return res.render('error', { errorMessage: error.message });
 	}
 });
+//Obtener todoas las materias de una carrera
 
 router.get('/career/:assigned_career', cors(), async (req, res) => {
 	const { assigned_career } = req.params;
@@ -151,12 +152,12 @@ router.get('/career/:assigned_career', cors(), async (req, res) => {
 			items = response.data.data;
 			const subject = await Subject.find().lean();
 			for (let i = 0; i < items.length; i++) {
-				if (items[i].career_name == assigned_career) {
+				if (items[i].career_code == assigned_career) {
 					career = items[i];
 				}
 			}
 			for (let i = 0; i < subject.length; i++) {
-				if (career.career_name == subject[i].assigned_career) {
+				if (career.career_code == subject[i].assigned_career) {
 					subjects.push(subject[i]);
 				}
 			}
@@ -171,6 +172,7 @@ router.get('/career/:assigned_career', cors(), async (req, res) => {
 		return res.render('error', { errorMessage: error.message });
 	}
 });
+//Obtener todoas las materias de una carrera en un semestre en especifico
 
 router.get(
 	'/career/:assigned_career/:semester_num',
@@ -187,7 +189,7 @@ router.get(
 				items = response.data.data;
 				const subject = await Subject.find().lean();
 				for (let i = 0; i < items.length; i++) {
-					if (items[i].career_name == assigned_career) {
+					if (items[i].career_code == assigned_career) {
 						career = items[i];
 					}
 				}
@@ -201,7 +203,7 @@ router.get(
 
 					for (let i = 0; i < subject.length; i++) {
 						if (
-							career.career_name == subject[i].assigned_career &&
+							career.career_code == subject[i].assigned_career &&
 							semester.semester_num == subject[i].semester_num
 						) {
 							subjects.push(subject[i]);

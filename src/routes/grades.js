@@ -112,7 +112,7 @@ router.delete('/delete/:id', cors(), async (req, res, next) => {
 	}
 });
 
-//GET all grades from 1 student
+// Obtener todas las calificaciones de una alumno
 router.get('/student/:student_id', cors(), async (req, res) => {
 	const { student_id } = req.params;
 	let student = [];
@@ -140,19 +140,6 @@ router.get('/student/:student_id', cors(), async (req, res) => {
 	}
 });
 
-router.get('/:assigned_career/:semester_num', cors(), async (req, res) => {
-	const { assigned_career, semester_num } = req.params;
-	try {
-		const grades = await Grade.find().lean();
-
-		res.render('grades/index', {
-			grades,
-		});
-	} catch (error) {
-		console.log({ error });
-		return res.render('error', { errorMessage: error.message });
-	}
-});
 router.get(
 	'/career/:assigned_career/:semester_num',
 	cors(),
@@ -177,7 +164,7 @@ router.get(
 					for (let i = 0; i < itemsSemester.length; i++) {
 						if (
 							itemsSemester[i].semester_num == semester_num &&
-							career.career_code == itemsSemester[i].career
+							career.career_code == itemsSemester[i].career_code
 						) {
 							semester = itemsSemester[i];
 						}
