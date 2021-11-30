@@ -131,7 +131,7 @@ router.delete('/delete/:id', cors(), async (req, res, next) => {
 router.get('/student/:student_id', cors(), async (req, res) => {
 	const { student_id } = req.params;
 	let student = [];
-	const URL = `https://crud-nodejs-1.herokuapp.com/${student_id}`;
+	const URL = `https://crud-nodejs-1.herokuapp.com/students/${student_id}`;
 
 	try {
 		axios.get(URL).then(async (response) => {
