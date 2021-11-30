@@ -155,29 +155,30 @@ router.get('/student/:student_id', cors(), async (req, res) => {
 router.get('/career/:career_code/:semester_num', cors(), async (req, res) => {
 	const { career_code, semester_num } = req.params;
 	let career = [];
-	let semester = [];
+	const semester = [];
+	const grades = [];
 	const URL = `https://app-flask-mysql.herokuapp.com/career/${career_code}`;
 	const URL2 = `https://app-flask-mysql.herokuapp.com/semester/${semester_num}`;
 	try {
 		axios.get(URL).then(async (response) => {
-			career = response.data.data;
-			const grades = await Grade.find().lean();
+			career = response.data;
+			const allGrades = await Grade.find().lean();
 			axios.get(URL2).then(async (response) => {
-				semester = response.data.data;
-				for (let i = 0; i < semester.length; i++) {
+				items = response.data;
+				for (let i = 0; i < items.length; i++) {
 					if (
-						semester[i].semester_num == semester_num &&
-						semester[i].career_code == career_code
+						items[i].semester_num == semester_num &&
+						items[i].career_code == career_code
 					) {
-						semester.push(semester[i]);
+						semester.push(items[i]);
 					}
 				}
-				for (let i = 0; i < grades.length; i++) {
+				for (let i = 0; i < allGrades.length; i++) {
 					if (
-						career_code == grades[i].assigned_career &&
-						semester_num == grades[i].semester_num
+						allGrades[i].assigned_career == career_code &&
+						allGrades[i].semester_num == semester_num
 					) {
-						grades.push(grades[i]);
+						grades.push(allGrades[i]);
 					}
 				}
 				const relation = {
