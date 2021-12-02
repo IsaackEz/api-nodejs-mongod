@@ -120,7 +120,10 @@ router.get('/student/:student_id', cors(), async (req, res) => {
 			student = response.data;
 			const subject = await Subject.find().lean();
 			for (let i = 0; i < subject.length; i++) {
-				if (student[0].career == subject[i].assigned_career) {
+				if (
+					student[0].career.toLowerCase() ==
+					subject[i].assigned_career.toLowerCase()
+				) {
 					subjects.push(subject[i]);
 				}
 			}
@@ -148,7 +151,10 @@ router.get('/career/:career_code', cors(), async (req, res) => {
 			const subject = await Subject.find().lean();
 
 			for (let i = 0; i < subject.length; i++) {
-				if (career_code == subject[i].assigned_career) {
+				if (
+					career_code.toLowerCase() ==
+					subject[i].assigned_career.toLowerCase()
+				) {
 					subjects.push(subject[i]);
 				}
 			}
@@ -181,14 +187,16 @@ router.get('/career/:career_code/:semester_num', cors(), async (req, res) => {
 				for (let i = 0; i < itemsSemester.length; i++) {
 					if (
 						itemsSemester[i].semester_num == semester_num &&
-						itemsSemester[i].career_code == career_code
+						itemsSemester[i].career_code.toLowerCase() ==
+							career_code.toLowerCase()
 					) {
 						semester.push(itemsSemester[i]);
 					}
 				}
 				for (let i = 0; i < allSubjects.length; i++) {
 					if (
-						allSubjects[i].assigned_career == career_code &&
+						allSubjects[i].assigned_career.toLowerCase() ==
+							career_code.toLowerCase() &&
 						allSubjects[i].semester_num == semester_num
 					) {
 						subjects.push(allSubjects[i]);
@@ -214,7 +222,9 @@ router.get('/name/:subject_name', cors(), async (req, res) => {
 	try {
 		const subject = await Subject.find({
 			subject_name: subject_name,
-		}).lean();
+		})
+			.collation({ locale: 'en', strength: 2 })
+			.lean();
 		res.send(subject);
 	} catch (error) {
 		console.log({ error });

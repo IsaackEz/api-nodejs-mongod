@@ -165,14 +165,16 @@ router.get('/career/:career_code/:semester_num', cors(), async (req, res) => {
 				for (let i = 0; i < items.length; i++) {
 					if (
 						items[i].semester_num == semester_num &&
-						items[i].career_code == career_code
+						items[i].career_code.toLowerCase() ==
+							career_code.toLowerCase()
 					) {
 						semester.push(items[i]);
 					}
 				}
 				for (let i = 0; i < allGrades.length; i++) {
 					if (
-						allGrades[i].assigned_career == career_code &&
+						allGrades[i].assigned_career.toLowerCase() ==
+							career_code.toLowerCase() &&
 						allGrades[i].semester_num == semester_num
 					) {
 						grades.push(allGrades[i]);
